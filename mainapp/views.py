@@ -81,8 +81,8 @@ def home(request):
             q=Q()
             if domain == 'Student':
                 for query in queries:
-                    q = q | Q(username__icontains=query)
-                profile_list= User.objects.filter(q)
+                    q = q | Q(user__username__icontains=query)
+                profile_list = UserProfile.objects.filter(q)
                 return render(request, "profiles.html", {'profile_list': profile_list})
 
             elif domain == 'Project':
@@ -99,9 +99,13 @@ def home(request):
         user = request.user
         projects = user.project_set.all()
         aprojects = Notification.objects.filter(actor_object_id=user.id,
-                                                actor_content_type=ContentType.objects.get_for_model(user))
+                                                 actor_content_type=ContentType.objects.get_for_model(user))
+        if float(len(aprojects)):
+            projvsapll = len(projects) / float(len(aprojects))
+        else:
+            projvsapll =0;
     return render(request, "home.html", {'search_form': search_form,
-                                         'projects': projects, 'aprojects': aprojects})
+                                         'projects': projects, 'aprojects': aprojects, 'projvsapll':projvsapll})
 
 
 def user_register(request):
@@ -353,7 +357,7 @@ def explore_projects(request):
         project_list = paginator.page(paginator.num_pages)
 
 
-    return render(request, "projects.html", {'project_list': project_list,'length':len(projects)})
+    return render(request, "projects.html", {'project_list': project_list,'length':len(projects),'action':1})
 
 
 def explore_profiles(request):
@@ -361,7 +365,7 @@ def explore_profiles(request):
         profiles = UserProfile.objects.exclude(user=request.user)
     else:
         profiles = UserProfile.objects.all()
-    paginator = Paginator(profiles, 3) # Show 5 contacts per page
+    paginator = Paginator(profiles, 4) # Show 5 contacts per page
 
     page = request.GET.get('page')
     try:
@@ -425,11 +429,17 @@ def filter_search(request):
         return render(request, "projects.html", {'project_list': project_list})
 
 
+def sort_search(request, sort_id):
 
+    if sort_id == '1':
+        print("new")
+        project_list = Project.objects.exclude(user=request.user).order_by('-post_date')
+    else:
+        print("old")
+        project_list = Project.objects.exclude(user=request.user).order_by('post_date')
 
-        #
-        # q2=Q()
-        # q2 = q2 | Q(p_title__icontains=query) | Q(p_category__icontains=query) | Q(skills__icontains=query)
+    return render(request, "projects.html", {'project_list': project_list, 'action':1})
+
 
 
 
