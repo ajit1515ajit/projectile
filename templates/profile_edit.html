@@ -1,18 +1,17 @@
 
+{%extends "view_container.html" %}
 
-{%extends "base.html" %}
-
-{% block content %}
+{% block details %}
 
 <div class="profile_update ui container">
-    <div class="profile_form">
+    <div class="">
         <h2 class="title">Edit Your Profile Details</h2>
         <form class="ui form" method="POST" action="{% url 'profile_edit'  %}">
             {% csrf_token %}
             <h4 class="ui dividing header">Education Qualification</h4>
 
             <div class="field">
-                <label>Usename</label>
+                <label>Username</label>
                 <input type="text" value="{{ profile.user.username }}"/>
             </div>
 
@@ -63,6 +62,11 @@
             {% endif %}
 
             <div class="field">
+                <label>Skills</label>
+                {{u_form.skills}}
+            </div>
+
+            <div class="field">
                 <label>{{u_form.u_contact_no.label}}</label>
                {{u_form.u_contact_no}}
             </div>
@@ -87,4 +91,4 @@
         </form>
     </div>
 </div>
-{% endblock content %}
+{% endblock details %}

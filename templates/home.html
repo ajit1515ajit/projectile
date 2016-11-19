@@ -1,58 +1,159 @@
 {%extends "base.html" %}
 
 {%block content %}
-<h1>Hello</h1>
-<p>{{ request.user.username }}</p>
+
+<div class="home_view ui container">
 
 
-<form method="post" action="{% url 'home' %}">
-    {% csrf_token %}
-    {{ search_form }}
-    <input type="submit" value="Search" />
-</form>
+    <h1>Hello</h1>
+    <p>{{ request.user.username }}</p>
+
+    {% if messages %}
+    {% for message in messages %}
+        {{ message}}
+    {% endfor %}
+
+{% endif %}
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui green segment">
+                <div class="ui three column grid">
+                    <div class="column">
+                        <div id="demo-pie-1" class="pie-title-center" data-percent="100" >
+                            <span class="pie-value">20</span>
+                        </div>
+                        <div><strong>Posted Project</strong></div>
+                    </div>
+                    <div class="column">
+                        <div id="demo-pie-6" class="pie-title-center" data-percent="100">
+                            <span class="pie-value">40</span>
+                        </div>
+                        <div><strong>Application Recived</strong></div>
+                    </div>
+                    <div class="column">
+                        <div id="demo-pie-3" class="pie-title-center" data-percent="35">
+                            <span class="pie-value">40</span>
+                        </div>
+                        <div><strong>Posted Project Rate</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui green segment">
+                <div class="ui three column grid">
+                    <div class="column">
+                        <div id="demo-pie-4" class="pie-title-center" data-percent="100">
+                            <span class="pie-value">40</span>
+                        </div>
+                        <div><strong>Applied Project</strong></div>
+                    </div>
+                    <div class="column">
+                        <div id="demo-pie-5" class="pie-title-center" data-percent="100">
+                            <span class="pie-value">40</span>
+                        </div>
+                        <div><strong>Accepted Pproject</strong></div>
+                    </div>
+                    <div class="column">
+                        <div id="demo-pie-2" class="pie-title-center" data-percent="35">
+                            <span class="pie-value">40</span>
+                        </div>
+                        <div><strong>Acceptence Rate</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th colspan="4">Posted Project</th>
+                <th class="right aligned"><a href="{% url 'prev_posts' %}"><button type="submit" class="ui basic button" value="Submit">View all</button></a></th>
+            </tr>
+             <tr>
+                <th>Project title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>location</th>
+                <th>Difficulty-level</th>
+             </tr>
+        </thead>
+        <tbody>
+                {% for project in projects %}
+                 <tr>
+                    <td>{{ project.p_title }}</td>
+                    <td>{{ project.p_category }}</td>
+                    <td>{{ project.p_status }}</td>
+                    <td>{{ project.p_location }}</td>
+                    <td>{{ project.diff_level }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th colspan="4">Apply Project</th>
+                <th class="right aligned"><a href="{% url 'list_applied' %}"><button type="submit" class="ui basic button" value="Submit">View all</button></a></th>
+            </tr>
+            <tr>
+                <th>Project Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Location</th>
+                <th>Difficulty-level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aproject in aprojects %}
+                 <tr>
+                    <td>{{ aproject.target.p_title }}</td>
+                    <td>{{ aproject.target.p_category }}</td>
+                    <td>{{ aproject.target.p_status }}</td>
+                    <td>{{ aproject.target.p_location }}</td>
+                    <td>{{ aproject.target.diff_level }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <!--<form method="get" action="{% url 'prev_posts' %}">
+        {% csrf_token %}
+
+        <input type="submit" value="Posted Projects "/>
+    </form>
 
 
+    <form method="get" action="{% url 'post_project' %}">
+        {% csrf_token %}
+
+        <input type="submit" value="Post Project"/>
+    </form>
 
 
-<br>
+    <form method="get" action = "{% url 'profile_edit'%}">
+        {% csrf_token %}
 
-<form method="get" action="{% url 'prev_posts' %}">
-    {% csrf_token %}
+        <input type="submit" value="Edit Profile"/>
+    </form>
 
-    <input type="submit" value="Posted Projects "/>
-</form>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
 
-
-<form method="get" action="{% url 'post_project' %}">
-    {% csrf_token %}
-
-    <input type="submit" value="Post Project"/>
-</form>
+        <input type="submit" value="LogOut"/>
+    </form>
 
 
-<form method="get" action = "{% url 'profile_edit'%}">
-    {% csrf_token %}
+    <form method="get" action="{% url 'notific' %}">
+        {% csrf_token %}
 
-    <input type="submit" value="Edit Profile"/>
-</form>
+        <input type="submit" value="Notifications"/>
+    </form>
 
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
+    <form method="get" action="{% url 'list_applied' %}">
+        {% csrf_token %}
 
-    <input type="submit" value="LogOut"/>
-</form>
-
-
-<form method="get" action="{% url 'notific' %}">
-    {% csrf_token %}
-
-    <input type="submit" value="Notifications"/>
-</form>
-
-<form method="get" action="{% url 'list_applied' %}">
-    {% csrf_token %}
-
-    <input type="submit" value="GetApplied"/>
-</form>
-
+        <input type="submit" value="GetApplied"/>
+    </form>-->
+</div>
 {% endblock content %}

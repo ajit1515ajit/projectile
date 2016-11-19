@@ -1,10 +1,11 @@
-{%extends "base.html" %}
+{%extends "view_container.html" %}
 
-{% block content %}
+{% block details %}
 
 <div class="profile_update ui container">
-    <div class="profile_form">
-        <h2 class="title">Edit Project Details</h2>
+    <div class="">
+        <h2 class="title"><span class="title-deco">Edit Project Details</span></h2>
+    <div class="white-space space-xm"></div>
         <form class="ui form" method="POST" action="{% url 'project_edit' project_id=project.pk %}">
             {% csrf_token %}
 
@@ -18,7 +19,7 @@
                {{e_form.p_category}}
             </div>
             <div class="field">
-                 <label>{{p_form.diff_level.label}}</label>
+                 <label>{{e_form.diff_level.label}}</label>
                 <div class="three fields">
                     {% for choices in e_form.diff_level%}
                     <div class="field">
@@ -28,6 +29,10 @@
                     </div>
                     {% endfor %}
                 </div>
+            </div>
+            <div class="field">
+                <label>{{e_form.skills.label}}</label>
+               {{e_form.skills}}
             </div>
 
             <div class="field">
@@ -41,8 +46,13 @@
             </div>
 
             <div class="field">
+                <label>{{e_form.p_location.label}}</label>
+               {{e_form.p_location}}
+            </div>
+
+            <div class="field">
                 <label>{{e_form.p_privacy.label}}</label>
-               {{e_form.p_privacy}} Privacy
+               {{e_form.p_privacy}}
             </div>
 
             <div class="field">
@@ -50,10 +60,9 @@
                {{e_form.p_description}}
             </div>
 
-
             <button type="submit" class="ui primary button" value="Submit">Submit</button>
             <button type="reset" class="ui negative button" value="Reset">Reset</button>
         </form>
     </div>
 </div>
-{% endblock content %}
+{% endblock details %}
